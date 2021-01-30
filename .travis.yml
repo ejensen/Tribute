@@ -8,4 +8,5 @@ matrix:
       osx_image: xcode12.2
       script:
         - set -o pipefail
-        - xcodebuild -project Tribute.xcodeproj -scheme "Tribute" -sdk macosx clean build
+        - swift test
+        - swift run tribute list

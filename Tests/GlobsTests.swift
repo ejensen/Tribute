@@ -5,6 +5,7 @@
 //  Created by Nick Lockwood on 01/12/2020.
 //
 
+@testable import Tribute
 import XCTest
 
 class GlobsTests: XCTestCase {
@@ -49,14 +50,14 @@ class GlobsTests: XCTestCase {
     func testExpandPathWithCharacterClassRange() {
         let path = "T[e-r]*.swift"
         let directory = URL(fileURLWithPath: #file)
-            .deletingLastPathComponent().deletingLastPathComponent().appendingPathComponent("Sources")
+            .deletingLastPathComponent().deletingLastPathComponent().appendingPathComponent("Sources/Tribute")
         XCTAssertEqual(matchGlobs([expandGlob(path, in: directory.path)], in: directory.path).count, 2)
     }
 
     func testExpandPathWithEitherOr() {
         let path = "T{emplate,ribute}.swift"
         let directory = URL(fileURLWithPath: #file)
-            .deletingLastPathComponent().deletingLastPathComponent().appendingPathComponent("Sources")
+            .deletingLastPathComponent().deletingLastPathComponent().appendingPathComponent("Sources/Tribute")
         XCTAssertEqual(matchGlobs([expandGlob(path, in: directory.path)], in: directory.path).count, 2)
     }
 

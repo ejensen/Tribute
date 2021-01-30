@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Tribute
 
 enum ExitCode: Int32 {
     case ok = 0 // EX_OK
@@ -13,8 +14,7 @@ enum ExitCode: Int32 {
 }
 
 do {
-    let tribute = Tribute()
-    print(try tribute.run(in: FileManager.default.currentDirectoryPath))
+    print(try Tribute.run(in: FileManager.default.currentDirectoryPath))
     exit(ExitCode.ok.rawValue)
 } catch {
     print("error: \(error)")

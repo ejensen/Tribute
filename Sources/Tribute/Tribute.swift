@@ -118,9 +118,9 @@ private extension String {
     }
 }
 
-class Tribute {
+public enum Tribute {
     // Find best match for a given string in a list of options
-    func bestMatches(for query: String, in options: [String]) -> [String] {
+    static func bestMatches(for query: String, in options: [String]) -> [String] {
         let lowercaseQuery = query.lowercased()
         // Sort matches by Levenshtein edit distance
         return options
@@ -139,7 +139,7 @@ class Tribute {
     }
 
     /// The Levenshtein edit-distance between two strings
-    func editDistance(_ lhs: String, _ rhs: String) -> Int {
+    static func editDistance(_ lhs: String, _ rhs: String) -> Int {
         var dist = [[Int]]()
         for i in 0 ... lhs.count {
             dist.append([i])
@@ -161,7 +161,7 @@ class Tribute {
     }
 
     // Parse a flat array of command-line arguments into a dictionary of flags and values
-    func preprocessArguments(_ args: [String]) throws -> [Argument: [String]] {
+    static func preprocessArguments(_ args: [String]) throws -> [Argument: [String]] {
         let arguments = Argument.allCases
         let argumentNames = arguments.map { $0.rawValue }
         var namedArgs: [Argument: [String]] = [:]
@@ -200,7 +200,7 @@ class Tribute {
         return namedArgs
     }
 
-    func fetchLibraries(in directory: URL, excluding: [Glob],
+    static func fetchLibraries(in directory: URL, excluding: [Glob],
                         includingPackages: Bool = true) throws -> [Library]
     {
         let standardizedDirectory = directory.standardized
@@ -277,7 +277,7 @@ class Tribute {
         return libraries.sorted { $0.name.localizedStandardCompare($1.name) == .orderedAscending }
     }
 
-    func fetchLibraries(forResolvedPackageAt url: URL) throws -> [Library] {
+    static func fetchLibraries(forResolvedPackageAt url: URL) throws -> [Library] {
         struct Pin: Decodable {
             let package: String
             let repositoryURL: URL
@@ -315,7 +315,7 @@ class Tribute {
         return libraries.filter { filter.contains($0.name.lowercased()) }
     }
 
-    func getHelp(with arg: String?) throws -> String {
+    static func getHelp(with arg: String?) throws -> String {
         guard let arg = arg else {
             let width = Command.allCases.map { $0.rawValue.count }.max(by: <) ?? 0
             return """
@@ -393,7 +393,7 @@ class Tribute {
         return command.help + ".\n\n" + detailedHelp + "\n"
     }
 
-    func listLibraries(in directory: String, with args: [String]) throws -> String {
+    static func listLibraries(in directory: String, with args: [String]) throws -> String {
         let arguments = try preprocessArguments(args)
         let globs = (arguments[.exclude] ?? []).map { expandGlob($0, in: directory) }
 
@@ -412,7 +412,7 @@ class Tribute {
         }.joined(separator: "\n")
     }
 
-    func check(in directory: String, with args: [String]) throws -> String {
+    static func check(in directory: String, with args: [String]) throws -> String {
         let arguments = try preprocessArguments(args)
         let skip = (arguments[.skip] ?? []).map { $0.lowercased() }
         let globs = (arguments[.exclude] ?? []).map { expandGlob($0, in: directory) }
@@ -454,7 +454,7 @@ class Tribute {
         return "Licenses file is up-to-date."
     }
 
-    func export(in directory: String, with args: [String]) throws -> String {
+    static func export(in directory: String, with args: [String]) throws -> String {
         let arguments = try preprocessArguments(args)
         let allow = (arguments[.allow] ?? []).map { $0.lowercased() }
         let skip = (arguments[.skip] ?? []).map { $0.lowercased() }
@@ -540,7 +540,7 @@ class Tribute {
         }
     }
 
-    func run(in directory: String, with args: [String] = CommandLine.arguments) throws -> String {
+    public static func run(in directory: String, with args: [String] = CommandLine.arguments) throws -> String {
         let arg = args.count > 1 ? args[1] : Command.help.rawValue
         guard let command = Command(rawValue: arg) else {
             let commands = Command.allCases.map { $0.rawValue }

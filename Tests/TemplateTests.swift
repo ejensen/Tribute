@@ -5,6 +5,7 @@
 //  Created by Nick Lockwood on 01/12/2020.
 //
 
+@testable import Tribute
 import XCTest
 
 class TemplateTests: XCTestCase {
